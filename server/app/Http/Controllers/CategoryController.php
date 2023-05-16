@@ -9,6 +9,11 @@ class CategoryController extends Controller
 {
     public function show(Category $category)
     {
-        return view('index', ['products' => $category->products, 'categories' => $category->children, 'back' => true]);
+        $category->load('descendants.products');
+        return view('index', [
+            'products' => $category->products->merge($category->descendants->map(fn($c) => $c->products)->flatten()),
+            'categories' => $category->children, 
+            'back' => true
+        ]);
     }
 }

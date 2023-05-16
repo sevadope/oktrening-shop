@@ -29,17 +29,17 @@ class CategorySeeder extends Seeder
         ]);
 
 
-        Category::create([
+        $c1->children()->create([
             'name' => 'Портативное аудио',
             'parent_id' => $c1->getKey(),
         ]);
 
-        Category::create([
+        $c1->children()->create([
             'name' => 'Музыкальные инструменты',
             'parent_id' => $c1->getKey(),
         ]);
 
-        Category::create([
+        $c1->children()->create([
             'name' => 'Наушники',
             'parent_id' => $c1->getKey(),
         ]);

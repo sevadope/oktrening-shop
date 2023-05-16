@@ -2,7 +2,7 @@
 
 @section('center')
 @if(isset($back))
-<a href="{{ url()->previous() }}" class="btn btn-lg btn-secondary">Назад</a>
+<a href="/" class="btn btn-lg btn-secondary">Назад</a>
 @endif
 <div class="container-fluid w-auto text-center">
     <div class="row m-5 list-group list-group-horizontal">

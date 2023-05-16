@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('image')->nullable();
-            $table->foreignId('parent_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('parent_id')->references('id')->on('categories')->cascadeOnDelete();
+            $table->nestedSet();
         });
     }
 
@@ -28,5 +27,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('categories');
+
+        Schema::table('categories', function (Blueprint $table) {
+            $table->dropNestedSet();
+        });
     }
 };
