@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('', [ProductController::class, 'index'])->name('products.index');
+
+Route::get('cart', [CartController::class, 'show'])->name('cart.show');
+Route::post('cart/add', [CartController::class, 'add'])->name('cart.add');
+
+Route::get('categories/{category}', [CategoryController::class, 'show'])->name('categories.show');

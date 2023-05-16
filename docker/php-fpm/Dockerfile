@@ -1,6 +1,6 @@
 FROM php:8.1.19-fpm
 
-ENV USER_ID=1000
+# ENV USER_ID=1000
 
 # Starting from scratch
 RUN apt-get clean
@@ -37,10 +37,13 @@ RUN apt-get -y autoremove
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Set User
-RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid 33 user
-USER user
+# RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid 33 user
+# USER user
 
 # Set up default directory
 WORKDIR /var/www/server
+
+# Permissions
+RUN chown -R www-data:www-data /var/www/server
 
 EXPOSE 9000

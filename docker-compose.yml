@@ -5,7 +5,7 @@ services:
         container_name: ok_php
         build:  docker/php-fpm/
         volumes:
-            -  ./server:/var/www/server
+            - ./server:/var/www/server
         depends_on:
             -  postgres
         env_file:
