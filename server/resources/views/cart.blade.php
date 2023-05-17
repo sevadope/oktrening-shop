@@ -3,32 +3,32 @@
 @section('center')
 <a href="/" class="btn btn-lg btn-secondary">Назад</a>
 <div class="container text-center mt-5">
-    @foreach($products as $product)
+    @foreach($items as $item)
         <div class="row align-items-center justify-content-between mb-3">
             <div class="col-2">
-                <img style="height: 10rem; width: 10rem;" class="img-thumbnail" src="{{ asset('storage/products/' . $product['item']->image) }}" alt="">
+                <img style="height: 10rem; width: 10rem;" class="img-thumbnail" src="{{ asset('storage/products/' . $item->product->image) }}" alt="">
             </div>
             <div class="col-3">
-                {{ $product['item']->name }}
+                {{ $item->product->name }}
             </div>
             <div class="col-1">
-                <h3>{{ $product['count'] }}</h3>
+                <h3>{{ $item->count }}</h3>
             </div>
             <div class="col-1">
                 <div class="btn-group">
-                    <a href="{{ route('cart.add', ['id' => $product['item']->getKey()]) }}" class="btn btn-outline-primary">+</a>
-                    <a href="{{ route('cart.remove', ['id' => $product['item']->getKey()]) }}" class="btn btn-outline-danger">-</a>
+                    <a href="{{ route('cart.add', ['id' => $item->product->getKey()]) }}" class="btn btn-outline-primary">+</a>
+                    <a href="{{ route('cart.remove', ['id' => $item->product->getKey()]) }}" class="btn btn-outline-danger">-</a>
                 </div>
             </div>
             <div class="col-5">
-                <h3 class="">{{ $product['item']->price * $product['count'] }} ₸</h3>
+                <h3 class="">{{ $item->product->price * $item->count }} ₸</h3>
             </div>
         </div>
     @endforeach
     <div class="row mt-5">
-        @if($products->isNotEmpty())
+        @if($items->isNotEmpty())
         <div class="col-4">
-            <h2>Итого: {{ $products->sum(fn($p) => $p['item']->price * $p['count']) }} ₸</h2>
+            <h2>Итого: {{ $items->sum(fn($p) => $p->product->price * $p->count) }} ₸</h2>
         </div>
         <div class="col-4"></div>
         <div class="col-4">

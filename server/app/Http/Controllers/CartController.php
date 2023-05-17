@@ -7,6 +7,7 @@ use App\Http\Requests\CartAddRequest;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\CartService;
 use Illuminate\Support\Facades\Cookie;
 
 class CartController extends Controller
@@ -19,54 +20,34 @@ class CartController extends Controller
 
         # Unserialize cart from cookies or create new empty cart
         $cart = json_decode(Cookie::get(self::COOKIE_NAME, '{}'), true);
-        
-        
-        # Update item amount
-        if (isset($cart[$product_id])) {
-            $cart[$product_id] += 1;
-        } else {
-            $cart[$product_id] = 1;
-        }
-        
-        $products = Product::whereIn('id', array_keys($cart))->get();
-        
-        # Set up collection keys to count items amount
-        $products = $products->map(
-            fn($p) => ['item' => $p, 'count' => $cart[$p->getKey()]]
-        );
+
+        $cart_service = new CartService($cart);
+        $cart_service->addProduct($product_id);
+
+        $items = $cart_service->getItems();
         
         # Update cookie
-        Cookie::queue(self::COOKIE_NAME, json_encode($cart));
+        Cookie::queue(self::COOKIE_NAME, $cart_service->toString());
 
-        return view('cart', compact('products'));
+        return view('cart', compact('items'));
     }
 
     public function remove(CartAddRequest $request)
     {
         $product_id = $request->validated()['id'];
 
+        # Unserialize cart from cookies or create new empty cart
         $cart = json_decode(Cookie::get(self::COOKIE_NAME, '{}'), true);
         
-        # Update item amount
-        if (isset($cart[$product_id])) {
-            if ($cart[$product_id] <= 1) {
-                unset($cart[$product_id]);
-            } else {
-                $cart[$product_id] -= 1;
-            }
-        }
+        $cart_service = new CartService($cart);
+        $cart_service->removeProduct($product_id);
 
-        $products = Product::whereIn('id', array_keys($cart))->get();
-
-        # Set up collection keys to count items amount
-        $products = $products->map(
-            fn($p) => ['item' => $p, 'count' => $cart[$p->getKey()]]
-        );
+        $items = $cart_service->getItems();
         
         # Update cookie
-        Cookie::queue(self::COOKIE_NAME, json_encode($cart));
+        Cookie::queue(self::COOKIE_NAME, $cart_service->toString());
 
-        return view('cart', compact('products'));
+        return view('cart', compact('items'));
     }
 
     public function buy()
@@ -81,12 +62,9 @@ class CartController extends Controller
         # Unserialize cart from cookies or create new empty cart
         $cart = json_decode(Cookie::get(self::COOKIE_NAME, '{}'), true);
 
-        # Set up collection keys to count items amount
-        $products = Product::whereIn('id', array_keys($cart))->get()->map(
-            fn($p) => ['item' => $p, 'count' => $cart[$p->getKey()]]
-        );
+        $cart_service = new CartService($cart);
+        $items = $cart_service->getItems();
 
-
-        return view('cart', compact('products'));
+        return view('cart', compact('items'));
     }
 }
