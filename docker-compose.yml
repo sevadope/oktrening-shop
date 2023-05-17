@@ -28,6 +28,7 @@ services:
     nginx:    
         container_name: ok_nginx     
         build:  docker/nginx/
+        restart: always
         volumes:
             - ./server:/var/www/server
             - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -44,8 +45,8 @@ services:
     certbot:
         image: certbot/certbot
         volumes:
-        - ./docker/certbot/www/:/var/www/certbot/:rw
-        - ./docker/certbot/conf/:/etc/letsencrypt/:rw
+            - ./docker/certbot/www/:/var/www/certbot/:rw
+            - ./docker/certbot/conf/:/etc/letsencrypt/:rw
             
 volumes:
     database:
