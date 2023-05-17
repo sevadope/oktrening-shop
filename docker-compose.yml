@@ -34,6 +34,7 @@ services:
             - ./docker/nginx/sites/:/etc/nginx/sites-available
             - ./docker/nginx/conf.d/:/etc/nginx/conf.d
             - ./docker/certbot/www:/var/www/certbot/:ro
+            - ./docker/certbot/conf/:/etc/nginx/ssl/:ro
         depends_on:
             - php
         ports:  
@@ -44,6 +45,7 @@ services:
         image: certbot/certbot
         volumes:
         - ./docker/certbot/www/:/var/www/certbot/:rw
+        - ./docker/certbot/conf/:/etc/letsencrypt/:rw
             
 volumes:
     database:
