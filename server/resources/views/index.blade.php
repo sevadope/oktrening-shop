@@ -22,7 +22,7 @@
                             <p class="card-text">{{ $product->name }}</p>
                             <h3 class="card-title">{{ $product->price }} ₸</h3>
                             <div class="d-grid gap-2">
-                                <a href="{{ route('cart.add', ['product_id' => $product->getKey()]) }}" class="btn btn-success">Купить</a>
+                                <a href="{{ route('cart.add', ['id' => $product->getKey()]) }}" class="btn btn-success">Купить</a>
                             </div>
                         </div>
                     </div>
