@@ -38,6 +38,7 @@ services:
             - ./docker/certbot/conf/:/etc/nginx/ssl/:ro
         depends_on:
             - php
+            - certbot
         ports:  
             - "80:80"
             - "81:81"
